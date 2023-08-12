@@ -1,3 +1,4 @@
+import 'package:aip/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class KiosquesScreen extends StatefulWidget {
@@ -10,6 +11,15 @@ class KiosquesScreen extends StatefulWidget {
 class _KiosquesScreenState extends State<KiosquesScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: oranges.withOpacity(.2),
+        automaticallyImplyLeading: false,
+        title: const Text("Kiosques"),
+      ),
+      body: SafeArea(
+        child: Container(),
+      ),
+    );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:aip/pages/splash/splash_screen.dart';
+import 'package:aip/pages/splash/splash.dart';
 import 'package:aip/utils/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +12,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Agence Ivoirienne de Presse',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: oranges),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: const Splash(),
     );
   }
 }

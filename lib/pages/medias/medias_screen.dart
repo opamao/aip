@@ -1,3 +1,4 @@
+import 'package:aip/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class MediasScreen extends StatefulWidget {
@@ -10,6 +11,15 @@ class MediasScreen extends StatefulWidget {
 class _MediasScreenState extends State<MediasScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: oranges.withOpacity(.2),
+        automaticallyImplyLeading: false,
+        title: const Text("Medias"),
+      ),
+      body: SafeArea(
+        child: Container(),
+      ),
+    );
   }
 }
