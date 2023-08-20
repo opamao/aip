@@ -14,7 +14,6 @@ class MediasScreen extends StatefulWidget {
 }
 
 class _MediasScreenState extends State<MediasScreen> {
-  var recherche = TextEditingController();
 
   Future<List<Medias>> fetchData() async {
     var url = Uri.parse(Constance.medias);
@@ -60,7 +59,6 @@ class _MediasScreenState extends State<MediasScreen> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
                   final imageUrl = snapshot.data![index].sourceUrl!;
-
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
