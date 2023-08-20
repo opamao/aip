@@ -1,24 +1,23 @@
 import 'dart:convert';
 
-import 'package:aip/pages/posts/presse_model.dart';
+import 'package:aip/pages/products/kisoque_model.dart';
 import 'package:aip/utils/colors.dart';
-import 'package:aip/utils/constance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class PresseDetailScreen extends StatefulWidget {
-  final Presses presse;
+class KiosqueDetailScreen extends StatefulWidget {
+  final Kiosques kiosque;
 
-  const PresseDetailScreen({super.key, required this.presse});
+  const KiosqueDetailScreen({super.key, required this.kiosque});
 
   @override
-  State<PresseDetailScreen> createState() => _PresseDetailScreenState();
+  State<KiosqueDetailScreen> createState() => _KiosqueDetailScreenState();
 }
 
-class _PresseDetailScreenState extends State<PresseDetailScreen> {
+class _KiosqueDetailScreenState extends State<KiosqueDetailScreen> {
   String imageUrl = "";
 
   @override
@@ -28,7 +27,7 @@ class _PresseDetailScreenState extends State<PresseDetailScreen> {
   }
 
   Future<void> fetchData() async {
-    var url = Uri.parse(widget.presse.lLinks!.wpFeaturedmedia!.single.href!);
+    var url = Uri.parse(widget.kiosque.lLinks!.wpFeaturedmedia!.single.href!);
 
     final response = await http.get(url);
 
@@ -54,7 +53,7 @@ class _PresseDetailScreenState extends State<PresseDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: oranges.withOpacity(.2),
-        title: Text(widget.presse.title!.rendered!),
+        title: Text(widget.kiosque.title!.rendered!),
       ),
       body: SafeArea(
         child: Padding(
@@ -75,7 +74,7 @@ class _PresseDetailScreenState extends State<PresseDetailScreen> {
                 ),
                 const Gap(10),
                 Text(
-                  "Publié le ${formatDate(widget.presse.dateGmt!)}",
+                  "Publié le ${formatDate(widget.kiosque.dateGmt!)}",
                   style: const TextStyle(
                     fontWeight: FontWeight.normal,
                     fontSize: 15,
@@ -84,7 +83,7 @@ class _PresseDetailScreenState extends State<PresseDetailScreen> {
                 const Gap(10),
                 SizedBox(
                   child: HtmlWidget(
-                    widget.presse.title!.rendered!,
+                    widget.kiosque.title!.rendered!,
                     textStyle: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -94,7 +93,7 @@ class _PresseDetailScreenState extends State<PresseDetailScreen> {
                 const Gap(15),
                 SizedBox(
                   child: HtmlWidget(
-                    widget.presse.content!.rendered!,
+                    widget.kiosque.content!.rendered!,
                     textStyle: const TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 15,
