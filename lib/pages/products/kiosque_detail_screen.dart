@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:aip/pages/products/kisoque_model.dart';
+import 'package:aip/pages/products/kisoque_model_.dart';
 import 'package:aip/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class KiosqueDetailScreen extends StatefulWidget {
-  final Kiosques kiosque;
+  final Kiosques_ kiosque;
 
   const KiosqueDetailScreen({super.key, required this.kiosque});
 
@@ -18,29 +18,29 @@ class KiosqueDetailScreen extends StatefulWidget {
 }
 
 class _KiosqueDetailScreenState extends State<KiosqueDetailScreen> {
-  String imageUrl = "";
+  // String imageUrl = "";
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    // fetchData();
   }
 
-  Future<void> fetchData() async {
-    var url = Uri.parse(widget.kiosque.lLinks!.wpFeaturedmedia!.single.href!);
-
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
-      final imageUrl = jsonResponse['source_url'] as String;
-      setState(() {
-        this.imageUrl = imageUrl;
-      });
-    } else {
-      throw Exception("Une erreur s'est produite");
-    }
-  }
+  // Future<void> fetchData() async {
+  //   var url = Uri.parse(widget.kiosque.lLinks!.wpFeaturedmedia!.single.href!);
+  //
+  //   final response = await http.get(url);
+  //
+  //   if (response.statusCode == 200) {
+  //     final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
+  //     final imageUrl = jsonResponse['source_url'] as String;
+  //     setState(() {
+  //       this.imageUrl = imageUrl;
+  //     });
+  //   } else {
+  //     throw Exception("Une erreur s'est produite");
+  //   }
+  // }
 
   String formatDate(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
@@ -66,7 +66,8 @@ class _KiosqueDetailScreenState extends State<KiosqueDetailScreen> {
                     Radius.circular(10.0),
                   ),
                   child: Image.network(
-                    imageUrl,
+                    widget
+                        .kiosque.eEmbedded!.wpFeaturedmedia!.single.sourceUrl!,
                     fit: BoxFit.contain,
                     width: double.infinity,
                     height: 300,

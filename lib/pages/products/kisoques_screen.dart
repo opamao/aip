@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:aip/pages/products/kiosque_detail_screen.dart';
-import 'package:aip/pages/products/kisoque_model.dart';
+import 'package:aip/pages/products/kisoque_model_.dart';
 import 'package:aip/utils/colors.dart';
 import 'package:aip/utils/constance.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +16,14 @@ class KiosquesScreen extends StatefulWidget {
 }
 
 class _KiosquesScreenState extends State<KiosquesScreen> {
-  Future<List<Kiosques>> fetchData() async {
+  Future<List<Kiosques_>> fetchData() async {
     var url = Uri.parse(Constance.products);
 
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);
-      return jsonResponse.map((data) => Kiosques.fromJson(data)).toList();
+      return jsonResponse.map((data) => Kiosques_.fromJson(data)).toList();
     } else {
       throw Exception("Une erreur s'est produite");
     }
@@ -38,7 +38,7 @@ class _KiosquesScreenState extends State<KiosquesScreen> {
         title: const Text("Kiosques"),
       ),
       body: SafeArea(
-        child: FutureBuilder<List<Kiosques>>(
+        child: FutureBuilder<List<Kiosques_>>(
           future: fetchData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -75,11 +75,13 @@ class _KiosquesScreenState extends State<KiosquesScreen> {
                       child: Card(
                         child: Column(
                           children: [
-                            Image.asset(
-                              "assets/images/logos.png",
+                            Image.network(
+                              snapshot.data![index].eEmbedded!.wpFeaturedmedia!
+                                      .first.sourceUrl ??
+                                  "assets/images/logos.png",
                               fit: BoxFit.contain,
                               width: double.infinity,
-                              // height: 200,
+                              height: 200,
                             ),
                             Expanded(
                               child: HtmlWidget(

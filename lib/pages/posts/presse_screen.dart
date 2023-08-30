@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:aip/pages/posts/presse_detail_screen.dart';
-import 'package:aip/pages/posts/presse_model.dart';
+import 'package:aip/pages/posts/presse_model_.dart';
 import 'package:aip/utils/colors.dart';
 import 'package:aip/utils/constance.dart';
 import 'package:flutter/material.dart';
@@ -19,17 +20,42 @@ class PresseScreen extends StatefulWidget {
 class _PresseScreenState extends State<PresseScreen> {
   var recherche = TextEditingController();
 
-  Future<List<Presses>> fetchData() async {
-    var url = Uri.parse(Constance.posts);
+  Future<List<Presses_>> fetchData() async {
+    String? url = Constance.posts;
 
-    final response = await http.get(url);
+    var isRedirect = true;
 
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonResponse = json.decode(response.body);
-      return jsonResponse.map((data) => Presses.fromJson(data)).toList();
-    } else {
-      throw Exception("Une erreur s'est produite");
+    //final response = await http.get(url);
+
+    while (isRedirect) {
+      final client = http.Client();
+      final request = http.Request('GET', Uri.parse(url!))
+        ..followRedirects = false
+        ..headers['cookie'] = 'security=true';
+      print(request.headers);
+      final response = await client.send(request);
+
+      if (response.statusCode == HttpStatus.movedTemporarily) {
+        isRedirect = response.isRedirect;
+        url = response.headers['location'];
+        // final receivedCookies = response.headers['set-cookie'];
+      } else if (response.statusCode == HttpStatus.ok) {
+        final String responseBody = await response.stream.bytesToString();
+        final List<dynamic> jsonResponse = json.decode(responseBody);
+        return jsonResponse.map((data) => Presses_.fromJson(data)).toList();
+      } else {
+        throw Exception("An error occurred");
+      }
     }
+
+    // if (response.statusCode == 200) {
+    //   final List<dynamic> jsonResponse = json.decode(response.body);
+    //   return jsonResponse.map((data) => Presses.fromJson(data)).toList();
+    // } else {
+    //   throw Exception("Une erreur s'est produite");
+    // }
+
+    throw Exception("No valid response received");
   }
 
   @override
@@ -43,7 +69,7 @@ class _PresseScreenState extends State<PresseScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: FutureBuilder<List<Presses>>(
+          child: FutureBuilder<List<Presses_>>(
             future: fetchData(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
@@ -72,8 +98,14 @@ class _PresseScreenState extends State<PresseScreen> {
                                   padding: const EdgeInsets.all(10.0),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image.asset(
-                                      "assets/images/logo.png",
+                                    child: Image.network(
+                                      snapshot
+                                              .data![index]
+                                              .eEmbedded!
+                                              .wpFeaturedmedia!
+                                              .first
+                                              .sourceUrl ??
+                                          "assets/images/logo.png",
                                       fit: BoxFit.contain,
                                       width: double.infinity,
                                       height: 200,
